@@ -1108,30 +1108,248 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Mobile Header (hidden on desktop) */
+        .mobile-header {
+            display: none;
+        }
+
         /* Responsive Breakpoints */
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
             body {
                 flex-direction: column;
             }
-            aside.sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                border-right: none;
+            .mobile-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 1.25rem;
+                background: rgba(10, 12, 26, 0.95);
+                backdrop-filter: blur(15px);
                 border-bottom: 1px solid var(--border-color);
-                padding: 1.5rem;
+                position: fixed;
+                top: 0; left: 0; right: 0;
+                z-index: 999;
+                height: 56px;
             }
+            .mobile-brand {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .mobile-brand h1 {
+                font-size: 1.05rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .mobile-timer {
+                font-family: var(--font-code);
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: var(--cyan);
+                text-shadow: 0 0 8px var(--cyan-glow);
+                background: rgba(255, 255, 255, 0.03);
+                padding: 0.2rem 0.6rem;
+                border-radius: 8px;
+                border: 1px solid var(--border-color);
+            }
+            
+            aside.sidebar {
+                position: fixed;
+                bottom: 0; left: 0; right: 0; top: auto;
+                width: 100%;
+                height: 64px;
+                flex-direction: row;
+                padding: 0 0.5rem;
+                border-right: none;
+                border-top: 1px solid var(--border-color);
+                border-bottom: none;
+                background: rgba(8, 10, 19, 0.95);
+                backdrop-filter: blur(20px);
+                z-index: 1000;
+                justify-content: space-around;
+                align-items: center;
+            }
+            
+            aside.sidebar .brand,
+            aside.sidebar .timer-widget,
+            aside.sidebar .sidebar-footer {
+                display: none !important;
+            }
+            
+            aside.sidebar nav.nav-menu {
+                flex-direction: row;
+                width: 100%;
+                justify-content: space-around;
+                gap: 0;
+                margin: 0;
+            }
+            
+            aside.sidebar .nav-item {
+                flex-direction: column;
+                gap: 0.2rem;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.62rem;
+                padding: 0.25rem 0;
+                flex: 1;
+                border: none;
+                background: none;
+                border-radius: 0;
+                color: var(--text-muted);
+                text-align: center;
+            }
+            
+            aside.sidebar .nav-item i {
+                font-size: 1.2rem;
+                margin: 0;
+                width: auto;
+            }
+            
+            aside.sidebar .nav-item.active {
+                color: var(--cyan);
+                background: none;
+                border: none;
+                box-shadow: none;
+                text-shadow: 0 0 8px var(--cyan-glow);
+            }
+            
+            aside.sidebar .nav-item.active i {
+                filter: drop-shadow(0 0 5px var(--cyan-glow));
+            }
+            
             main.main-content {
                 margin-left: 0;
                 width: 100%;
-                padding: 1.5rem;
+                padding: 1rem;
+                padding-top: 72px; /* 56px header + 16px space */
+                padding-bottom: 80px; /* 64px nav + 16px space */
             }
+            
+            .section-header {
+                margin-bottom: 1.5rem;
+            }
+            .section-header h2 {
+                font-size: 1.6rem;
+            }
+            .section-header p {
+                font-size: 0.9rem;
+            }
+            
+            /* Dashboard grid */
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            .metric-card {
+                padding: 1rem 1.25rem;
+            }
+            
+            .tracker-section {
+                padding: 1.25rem;
+                margin-bottom: 1.5rem;
+            }
+            .tracker-row {
+                grid-template-columns: 40px 1.5fr 1fr;
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+            .tracker-row .tracker-meta {
+                display: none; /* Hide detailed meta on mobile to save space */
+            }
+            .tracker-action {
+                justify-self: end;
+            }
+            
+            /* Diagrams horizontal scroll on mobile */
+            .diagram-viewport {
+                min-height: 380px;
+                padding: 0.5rem;
+                overflow-x: auto;
+                justify-content: flex-start;
+                -webkit-overflow-scrolling: touch;
+            }
+            .diagram-viewport svg {
+                min-width: 580px; /* Force minimum width to prevent unreadability */
+                height: 380px;
+            }
+            
             .diagrams-layout {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
+            
             .diagram-info-panel {
                 position: relative;
                 top: 0;
+                padding: 1.25rem;
+            }
+            
+            /* Flashcards styling on mobile */
+            .flashcard {
+                height: 340px;
+            }
+            .card-face {
+                padding: 1.5rem;
+            }
+            .card-question {
+                font-size: 1.25rem;
+            }
+            .card-answer pre {
+                font-size: 0.72rem;
+                padding: 0.5rem;
+            }
+            .card-controls {
+                gap: 0.5rem;
+            }
+            .deck-btn {
+                padding: 0.75rem;
+                font-size: 0.8rem;
+            }
+            
+            /* Quiz layout on mobile */
+            .quiz-card {
+                padding: 1.5rem;
+            }
+            .question-text {
+                font-size: 1.15rem;
+                margin-bottom: 1.25rem;
+            }
+            .option-btn {
+                padding: 0.8rem 1rem;
+                font-size: 0.85rem;
+            }
+            .quiz-feedback {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+            .matching-item {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+            .matching-index {
+                width: 24px;
+                height: 24px;
+                font-size: 0.75rem;
+                margin-right: 0.5rem;
+            }
+            .matching-arrow {
+                font-size: 0.8rem;
+            }
+            
+            /* Cheat Sheets */
+            .cheat-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .cheat-card {
+                padding: 1.25rem;
+            }
+            .code-container pre {
+                font-size: 0.72rem;
+                padding: 0.75rem;
             }
         }
     </style>
@@ -1162,6 +1380,15 @@
             </marker>
         </defs>
     </svg>
+
+    <!-- Mobile Top Header -->
+    <header class="mobile-header">
+        <div class="mobile-brand">
+            <span class="brand-icon">⚡</span>
+            <h1>Java Prep Portal</h1>
+        </div>
+        <div class="mobile-timer" id="mobile-timer-badge">60:00</div>
+    </header>
 
     <div class="app-container">
         
@@ -1782,19 +2009,31 @@ rs.close(); s.close(); c.close();</code></pre>
         function updateTimerDisplay() {
             const mins = Math.floor(timerSeconds / 60);
             const secs = timerSeconds % 60;
-            const display = document.getElementById('exam-timer');
-            display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            const timeStr = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
             
-            // Critical warning highlights
+            const display = document.getElementById('exam-timer');
+            const mobDisplay = document.getElementById('mobile-timer-badge');
+            
+            if (display) {
+                display.textContent = timeStr;
+                applyTimerStyles(display);
+            }
+            if (mobDisplay) {
+                mobDisplay.textContent = timeStr;
+                applyTimerStyles(mobDisplay);
+            }
+        }
+
+        function applyTimerStyles(el) {
             if (timerSeconds <= 300) { // 5 mins
-                display.style.color = '#ff3d00';
-                display.style.textShadow = '0 0 15px rgba(255,61,0,0.6)';
+                el.style.color = '#ff3d00';
+                el.style.textShadow = '0 0 15px rgba(255,61,0,0.6)';
             } else if (timerSeconds <= 600) { // 10 mins
-                display.style.color = '#ffea00';
-                display.style.textShadow = '0 0 15px rgba(255,234,0,0.5)';
+                el.style.color = '#ffea00';
+                el.style.textShadow = '0 0 15px rgba(255,234,0,0.5)';
             } else {
-                display.style.color = 'var(--cyan)';
-                display.style.textShadow = '0 0 10px var(--cyan-glow)';
+                el.style.color = 'var(--cyan)';
+                el.style.textShadow = '0 0 10px var(--cyan-glow)';
             }
         }
 
