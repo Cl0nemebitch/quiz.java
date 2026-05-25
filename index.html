@@ -1,0 +1,2562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Exam Prep Portal ⚡</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Design System */
+        :root {
+            --bg-base: #080a13;
+            --bg-surface: rgba(18, 22, 45, 0.6);
+            --bg-surface-hover: rgba(26, 31, 64, 0.8);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(124, 77, 255, 0.4);
+            
+            /* HSL tailored color palette */
+            --primary: #7c4dff;
+            --primary-glow: rgba(124, 77, 255, 0.35);
+            --cyan: #00e5ff;
+            --cyan-glow: rgba(0, 229, 255, 0.3);
+            --success: #00e676;
+            --success-glow: rgba(0, 230, 118, 0.2);
+            --warning: #ffea00;
+            --error: #ff3d00;
+            --error-glow: rgba(255, 61, 0, 0.2);
+            
+            --text-main: #f5f6fa;
+            --text-muted: #8a8eaf;
+            --font-display: 'Outfit', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-hover) var(--bg-base);
+        }
+
+        body {
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(124, 77, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(8, 10, 19, 1) 0%, rgba(4, 5, 10, 1) 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: var(--font-display);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Webkit Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* App Container & Layout */
+        .app-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Left Navigation Sidebar */
+        aside.sidebar {
+            width: var(--sidebar-width);
+            background: rgba(10, 12, 26, 0.85);
+            backdrop-filter: blur(16px);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .brand-icon {
+            font-size: 1.8rem;
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        .brand-title h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-title p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Countdown Timer Widget */
+        .timer-widget {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-widget::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--cyan));
+        }
+
+        .timer-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .timer-display {
+            font-family: var(--font-code);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cyan);
+            text-shadow: 0 0 10px var(--cyan-glow);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.35rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .timer-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Navigation Menu Items */
+        nav.nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.85rem 1.25rem;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            color: var(--text-main);
+            background: var(--bg-surface);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-item.active {
+            color: var(--text-main);
+            background: linear-gradient(135deg, var(--bg-surface), rgba(124, 77, 255, 0.15));
+            border-color: var(--border-hover);
+            box-shadow: 0 4px 20px rgba(124, 77, 255, 0.1);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        /* Main Workspace Panel */
+        main.main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 2.5rem 3.5rem;
+            min-height: 100vh;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        /* View Headers */
+        .section-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* Dashboard Metrics */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .metric-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: 0 8px 30px rgba(124, 77, 255, 0.1);
+        }
+
+        .metric-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            background: rgba(124, 77, 255, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(124, 77, 255, 0.2);
+        }
+
+        .metric-card:nth-child(2) .metric-icon {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--cyan);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        .metric-card:nth-child(3) .metric-icon {
+            background: rgba(0, 230, 118, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+        }
+
+        .metric-info h3 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        /* Syllabus Trackers List */
+        .tracker-section {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .tracker-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        .tracker-row {
+            display: grid;
+            grid-template-columns: 80px 1.5fr 1fr 120px;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .tracker-row:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .tracker-id {
+            font-family: var(--font-code);
+            font-weight: 700;
+            color: var(--cyan);
+            font-size: 0.9rem;
+        }
+
+        .tracker-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .tracker-meta {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .tracker-action {
+            justify-self: end;
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #9d7cff;
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        /* 3D Flashcards Mode CSS */
+        .flashcard-container {
+            max-width: 650px;
+            margin: 0 auto;
+            perspective: 1200px;
+            margin-bottom: 2rem;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 380px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, rgba(20, 24, 52, 0.95), rgba(10, 12, 28, 0.95));
+            border-color: rgba(124, 77, 255, 0.2);
+            justify-content: space-between;
+        }
+
+        .card-front::after {
+            content: '⚡ Click to Flip';
+            position: absolute;
+            bottom: 1.5rem;
+            right: 2rem;
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, rgba(14, 18, 38, 0.98), rgba(6, 8, 18, 0.98));
+            border-color: rgba(0, 229, 255, 0.2);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--cyan);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-question {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.35;
+            color: var(--text-main);
+            margin-top: 1rem;
+        }
+
+        .card-hints {
+            margin-top: auto;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .card-hint-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .card-answer {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-main);
+            margin-top: 0.5rem;
+        }
+
+        .card-answer h4 {
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .card-answer code {
+            font-family: var(--font-code);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: #ff79c6;
+            font-size: 0.9rem;
+        }
+
+        .card-answer pre {
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #f8f8f2;
+            margin: 0.75rem 0;
+        }
+
+        /* Card Sorting Controls */
+        .card-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .deck-btn {
+            flex: 1;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .deck-btn.dont-know {
+            background: rgba(255, 61, 0, 0.08);
+            border-color: rgba(255, 61, 0, 0.2);
+            color: #ff5252;
+        }
+
+        .deck-btn.dont-know:hover {
+            background: rgba(255, 61, 0, 0.15);
+            border-color: var(--error);
+            box-shadow: 0 0 15px var(--error-glow);
+        }
+
+        .deck-btn.know {
+            background: rgba(0, 230, 118, 0.08);
+            border-color: rgba(0, 230, 118, 0.2);
+            color: #69f0ae;
+        }
+
+        .deck-btn.know:hover {
+            background: rgba(0, 230, 118, 0.15);
+            border-color: var(--success);
+            box-shadow: 0 0 15px var(--success-glow);
+        }
+
+        .card-counter {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Interactive Diagrams CSS */
+        .diagrams-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .diagram-viewport {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2rem;
+            min-height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .diagram-info-panel {
+            background: rgba(18, 22, 45, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 1.75rem;
+            position: sticky;
+            top: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .diagram-info-title {
+            color: var(--cyan);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .diagram-info-body {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .diagram-info-body code {
+            font-family: var(--font-code);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            color: var(--cyan);
+        }
+
+        .diagram-tabs {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .diagram-tab-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .diagram-tab-btn.active, .diagram-tab-btn:hover {
+            color: var(--text-main);
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* SVG Element Interactivity */
+        .interactive-node {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .interactive-node rect, .interactive-node circle, .interactive-node polygon {
+            transition: fill 0.3s, stroke 0.3s, filter 0.3s;
+        }
+
+        .interactive-node:hover rect, .interactive-node:hover circle {
+            stroke: var(--cyan) !important;
+            stroke-width: 2.5px !important;
+            filter: drop-shadow(0px 0px 8px var(--cyan-glow));
+        }
+
+        .interactive-node.active rect, .interactive-node.active circle {
+            stroke: var(--primary) !important;
+            stroke-width: 3px !important;
+            filter: drop-shadow(0px 0px 12px var(--primary-glow));
+        }
+
+        /* Active Recall Quiz CSS */
+        .quiz-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 750px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            width: 150px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--cyan));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 2rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.1rem 1.5rem;
+            text-align: left;
+            font-family: inherit;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            background: var(--bg-surface-hover);
+            border-color: var(--border-hover);
+            transform: translateX(4px);
+        }
+
+        .option-btn.selected {
+            background: rgba(124, 77, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(124, 77, 255, 0.15);
+        }
+
+        .option-btn.correct {
+            background: rgba(0, 230, 118, 0.08) !important;
+            border-color: var(--success) !important;
+            color: #69f0ae !important;
+        }
+
+        .option-btn.wrong {
+            background: rgba(255, 61, 0, 0.08) !important;
+            border-color: var(--error) !important;
+            color: #ff5252 !important;
+        }
+
+        .quiz-feedback {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            display: none;
+            animation: slideUp 0.3s ease-out forwards;
+        }
+
+        .quiz-feedback-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-feedback.correct-style {
+            border-color: var(--success);
+            background: rgba(0, 230, 118, 0.03);
+        }
+
+        .quiz-feedback.correct-style .quiz-feedback-title {
+            color: var(--success);
+        }
+
+        .quiz-feedback.wrong-style {
+            border-color: var(--error);
+            background: rgba(255, 61, 0, 0.03);
+        }
+
+        .quiz-feedback.wrong-style .quiz-feedback-title {
+            color: var(--error);
+        }
+
+        .quiz-btn-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .quiz-next-btn {
+            background: linear-gradient(135deg, var(--primary), #9c78ff);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(124, 77, 255, 0.25);
+        }
+
+        .quiz-next-btn:hover {
+            box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .quiz-result-view {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            display: none;
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--cyan);
+            text-shadow: 0 0 20px var(--cyan-glow);
+            margin-bottom: 1rem;
+        }
+
+        .result-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .result-desc {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        /* Drag/Drop and Matching Items Styling */
+        .matching-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .matching-item {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            padding: 0.9rem 1.25rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: grab;
+            transition: all 0.2s ease;
+        }
+
+        .matching-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .matching-index {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--cyan);
+            margin-right: 1rem;
+        }
+
+        .matching-text {
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .matching-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .matching-arrow {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.2rem;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .matching-arrow:hover {
+            color: var(--text-main);
+        }
+
+        /* Fill in the Blanks Keyword Grid */
+        .blank-space {
+            border-bottom: 2px dashed var(--cyan);
+            padding: 0 0.5rem;
+            color: var(--cyan);
+            font-weight: 700;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .blank-keywords-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .keyword-chip {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .keyword-chip:hover {
+            border-color: var(--cyan);
+            background: rgba(0, 229, 255, 0.05);
+            transform: scale(1.05);
+        }
+
+        .keyword-chip.placed {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* Cheat Sheet Vault Styles */
+        .cheat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .cheat-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .cheat-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .cheat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .cheat-title {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--cyan);
+        }
+
+        .cheat-badge {
+            background: rgba(124, 77, 255, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .cheat-content {
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .cheat-content ul {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .cheat-content li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .cheat-content li::before {
+            content: '⚡';
+            position: absolute;
+            left: 0;
+            color: var(--cyan);
+            font-size: 0.75rem;
+        }
+
+        /* Code Block Copy UI */
+        .code-container {
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-main);
+            padding: 0.3rem 0.6rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s, background 0.2s;
+        }
+
+        .code-container:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary);
+        }
+
+        .code-container pre {
+            background: rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            overflow-x: auto;
+            color: #d1d5db;
+        }
+
+        /* Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--primary-glow)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 10px var(--primary)); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            body {
+                flex-direction: column;
+            }
+            aside.sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 1.5rem;
+            }
+            main.main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 1.5rem;
+            }
+            .diagrams-layout {
+                grid-template-columns: 1fr;
+            }
+            .diagram-info-panel {
+                position: relative;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Global Shared SVG Definitions (resolves rendering issues when SVGs are hidden) -->
+    <svg width="0" height="0" style="position: absolute; pointer-events: none;">
+        <defs>
+            <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1e295d"/>
+                <stop offset="100%" stop-color="#111638"/>
+            </linearGradient>
+            <linearGradient id="purpleGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3c1e70"/>
+                <stop offset="100%" stop-color="#241148"/>
+            </linearGradient>
+            <linearGradient id="greenGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0a4628"/>
+                <stop offset="100%" stop-color="#052514"/>
+            </linearGradient>
+            <linearGradient id="greyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2a2e45"/>
+                <stop offset="100%" stop-color="#141724"/>
+            </linearGradient>
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#00e5ff" />
+            </marker>
+        </defs>
+    </svg>
+
+    <div class="app-container">
+        
+        <!-- Navigation Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-icon">⚡</span>
+                <div class="brand-title">
+                    <h1>Java Prep Portal</h1>
+                    <p>Exam Booster v1.0</p>
+                </div>
+            </div>
+
+            <!-- Exam Countdown Timer -->
+            <div class="timer-widget">
+                <span class="timer-label">Exam Starts In</span>
+                <div class="timer-display" id="exam-timer">60:00</div>
+                <div class="timer-controls">
+                    <button class="timer-btn" onclick="toggleTimer()" id="timer-toggle-btn">Pause</button>
+                    <button class="timer-btn" onclick="resetTimer()">Reset</button>
+                    <button class="timer-btn" onclick="setCustomTimer()">Set</button>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="nav-menu">
+                <div class="nav-item active" onclick="switchView('dashboard', this)">
+                    <i>📊</i> Dashboard
+                </div>
+                <div class="nav-item" onclick="switchView('diagrams', this)">
+                    <i>📖</i> Interactive Diagrams
+                </div>
+                <div class="nav-item" onclick="switchView('flashcards', this)">
+                    <i>🗂️</i> Study Flashcards
+                </div>
+                <div class="nav-item" onclick="switchView('quiz', this)">
+                    <i>✍️</i> Practice Quiz
+                </div>
+                <div class="nav-item" onclick="switchView('cheats', this)">
+                    <i>📑</i> Quick Cheat Sheets
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>Designed for Rapid Revision</p>
+                <p>© 2026 Antigravity Engine</p>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            
+            <!-- SECTION 1: DASHBOARD -->
+            <section id="view-dashboard" class="view-section active">
+                <div class="section-header">
+                    <h2>Revision Dashboard</h2>
+                    <p>Track your ready-status across all critical exam modules.</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">🏆</div>
+                        <div class="metric-info">
+                            <h3>Average Accuracy</h3>
+                            <div class="metric-value" id="dash-accuracy">0%</div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">🗂️</div>
+                        <div class="metric-info">
+                            <h3>Flashcard Mastery</h3>
+                            <div class="metric-value" id="dash-flashcard-mastery">0/15</div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">🎯</div>
+                        <div class="metric-info">
+                            <h3>Exam Prep Score</h3>
+                            <div class="metric-value" id="dash-readiness">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tracker-section">
+                    <div class="tracker-title">
+                        <span>📝</span> Exam Syllabus Modules (Direct Links)
+                    </div>
+                    <div class="tracker-grid">
+                        <div class="tracker-row">
+                            <span class="tracker-id">Q1</span>
+                            <span class="tracker-name">Features & JVM Architecture</span>
+                            <span class="tracker-meta">5 core features, class loading, JVM compilation tree</span>
+                            <div class="tracker-action">
+                                <button class="action-btn" onclick="startTargetQuiz('q1')">Study Q1</button>
+                            </div>
+                        </div>
+                        <div class="tracker-row">
+                            <span class="tracker-id">Q2</span>
+                            <span class="tracker-name">Inheritance & Abstract vs Interface</span>
+                            <span class="tracker-meta">Diamond problem, Simple Interest program, constructor rules</span>
+                            <div class="tracker-action">
+                                <button class="action-btn" onclick="startTargetQuiz('q2')">Study Q2</button>
+                            </div>
+                        </div>
+                        <div class="tracker-row">
+                            <span class="tracker-id">Q3</span>
+                            <span class="tracker-name">Exceptions & Threads</span>
+                            <span class="tracker-meta">Custom exceptions, thread states diagram, priority parameters</span>
+                            <div class="tracker-action">
+                                <button class="action-btn" onclick="startTargetQuiz('q3')">Study Q3</button>
+                            </div>
+                        </div>
+                        <div class="tracker-row">
+                            <span class="tracker-id">Q4</span>
+                            <span class="tracker-name">Collections & Swing GUI</span>
+                            <span class="tracker-meta">ArrayList implementation, JFrame boundaries, submit listeners</span>
+                            <div class="tracker-action">
+                                <button class="action-btn" onclick="startTargetQuiz('q4')">Study Q4</button>
+                            </div>
+                        </div>
+                        <div class="tracker-row">
+                            <span class="tracker-id">Q5</span>
+                            <span class="tracker-name">JDBC Connectivity</span>
+                            <span class="tracker-meta">4 Driver types, executeUpdate vs executeQuery, 6-step SQL template</span>
+                            <div class="tracker-action">
+                                <button class="action-btn" onclick="startTargetQuiz('q5')">Study Q5</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: INTERACTIVE DIAGRAMS -->
+            <section id="view-diagrams" class="view-section">
+                <div class="section-header">
+                    <h2>Interactive Diagrams</h2>
+                    <p>Click on the highlights in the diagrams to memorize explanations.</p>
+                </div>
+
+                <div class="diagram-tabs">
+                    <button class="diagram-tab-btn active" onclick="switchDiagram('jvm', this)">JVM Architecture</button>
+                    <button class="diagram-tab-btn" onclick="switchDiagram('threads', this)">Thread Lifecycle</button>
+                    <button class="diagram-tab-btn" onclick="switchDiagram('jdbc', this)">JDBC Drivers</button>
+                </div>
+
+                <div class="diagrams-layout">
+                    <div class="diagram-viewport" id="diagram-display-port">
+                        <!-- JVM SVG Diagram -->
+                        <svg id="svg-jvm" width="100%" height="450" viewBox="0 0 600 450" style="display: block;">
+                            <!-- Compiler workflow -->
+                            <g class="interactive-node" onclick="setDiagDetail('java_src')">
+                                <rect x="30" y="30" width="180" height="45" rx="8" fill="url(#blueGrad)" stroke="#7c4dff" stroke-width="1"/>
+                                <text x="120" y="58" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">Java Source Code (.java)</text>
+                            </g>
+
+                            <path d="M 120 75 L 120 115" stroke="#00e5ff" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="130" y="100" fill="#00e5ff" font-size="10" font-family="Fira Code">javac compiler</text>
+
+                            <g class="interactive-node" onclick="setDiagDetail('bytecode')">
+                                <rect x="30" y="120" width="180" height="45" rx="8" fill="url(#blueGrad)" stroke="#7c4dff" stroke-width="1"/>
+                                <text x="120" y="148" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">Bytecode (.class file)</text>
+                            </g>
+
+                            <path d="M 120 165 L 120 205" stroke="#00e5ff" stroke-width="2"/>
+                            
+                            <!-- JVM Outer Box -->
+                            <rect x="250" y="30" width="320" height="390" rx="16" fill="rgba(124, 77, 255, 0.03)" stroke="rgba(124, 77, 255, 0.2)" stroke-width="2"/>
+                            <text x="410" y="20" fill="#7c4dff" font-size="14" font-weight="800" text-anchor="middle">JVM (Java Virtual Machine)</text>
+
+                            <!-- Class Loader -->
+                            <g class="interactive-node" onclick="setDiagDetail('class_loader')">
+                                <rect x="270" y="50" width="120" height="60" rx="8" fill="url(#purpleGrad)" stroke="#7c4dff" stroke-width="1.5"/>
+                                <text x="330" y="80" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">Class Loader</text>
+                                <text x="330" y="95" fill="#8a8eaf" font-size="9" text-anchor="middle">Loads .class files</text>
+                            </g>
+
+                            <!-- Connection arrow from Class Loader to Runtime Area -->
+                            <path d="M 390 80 L 430 80" stroke="#00e5ff" stroke-width="2" fill="none"/>
+                            
+                            <!-- Runtime Data Area -->
+                            <rect x="430" y="50" width="120" height="190" rx="10" fill="rgba(0, 229, 255, 0.03)" stroke="rgba(0, 229, 255, 0.2)" stroke-width="1.5"/>
+                            <text x="490" y="70" fill="#00e5ff" font-size="11" font-weight="800" text-anchor="middle">Runtime Data Area</text>
+
+                            <!-- Sub-regions in Runtime Data Area -->
+                            <g class="interactive-node" onclick="setDiagDetail('method_area')">
+                                <rect x="440" y="85" width="100" height="30" rx="4" fill="#0c102b" stroke="rgba(255,255,255,0.1)"/>
+                                <text x="490" y="104" fill="#f5f6fa" font-size="10" text-anchor="middle">Method Area</text>
+                            </g>
+                            <g class="interactive-node" onclick="setDiagDetail('heap')">
+                                <rect x="440" y="122" width="100" height="30" rx="4" fill="#0c102b" stroke="rgba(255,255,255,0.1)"/>
+                                <text x="490" y="141" fill="#f5f6fa" font-size="10" text-anchor="middle">Heap (GC Area)</text>
+                            </g>
+                            <g class="interactive-node" onclick="setDiagDetail('stack')">
+                                <rect x="440" y="159" width="100" height="30" rx="4" fill="#0c102b" stroke="rgba(255,255,255,0.1)"/>
+                                <text x="490" y="178" fill="#f5f6fa" font-size="10" text-anchor="middle">Stack</text>
+                            </g>
+                            <g class="interactive-node" onclick="setDiagDetail('pc_register')">
+                                <rect x="440" y="196" width="100" height="30" rx="4" fill="#0c102b" stroke="rgba(255,255,255,0.1)"/>
+                                <text x="490" y="215" fill="#f5f6fa" font-size="9" text-anchor="middle">PC Register</text>
+                            </g>
+
+                            <!-- Path to Execution Engine -->
+                            <path d="M 490 240 L 490 270" stroke="#00e5ff" stroke-width="2"/>
+                            
+                            <!-- Execution Engine Box -->
+                            <rect x="270" y="270" width="280" height="130" rx="10" fill="rgba(124,77,255,0.03)" stroke="rgba(124, 77, 255, 0.2)" stroke-width="1.5"/>
+                            <text x="410" y="288" fill="#7c4dff" font-size="11" font-weight="800" text-anchor="middle">Execution Engine</text>
+
+                            <!-- Engine Elements -->
+                            <g class="interactive-node" onclick="setDiagDetail('interpreter')">
+                                <rect x="285" y="300" width="120" height="40" rx="6" fill="url(#purpleGrad)" stroke="rgba(255,255,255,0.05)"/>
+                                <text x="345" y="325" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle">Interpreter</text>
+                            </g>
+                            <g class="interactive-node" onclick="setDiagDetail('jit')">
+                                <rect x="415" y="300" width="120" height="40" rx="6" fill="url(#purpleGrad)" stroke="rgba(255,255,255,0.05)"/>
+                                <text x="475" y="325" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle">JIT Compiler</text>
+                            </g>
+                            <g class="interactive-node" onclick="setDiagDetail('gc')">
+                                <rect x="285" y="350" width="250" height="40" rx="6" fill="url(#purpleGrad)" stroke="rgba(255,255,255,0.05)"/>
+                                <text x="410" y="374" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle">Garbage Collector (GC)</text>
+                            </g>
+
+                        </svg>
+
+                        <!-- Thread Lifecycle SVG Diagram -->
+                        <svg id="svg-threads" width="100%" height="450" viewBox="0 0 600 450" style="display: none;">
+                            <!-- State: NEW -->
+                            <g class="interactive-node" onclick="setDiagDetail('state_new')">
+                                <circle cx="100" cy="80" r="40" fill="url(#blueGrad)" stroke="#7c4dff" stroke-width="2"/>
+                                <text x="100" y="84" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">NEW</text>
+                            </g>
+
+                            <!-- NEW -> RUNNABLE arrow -->
+                            <path d="M 140 80 L 220 80" stroke="#00e5ff" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="180" y="70" fill="#00e5ff" font-size="10" text-anchor="middle" font-family="Fira Code">t.start()</text>
+
+                            <!-- State: RUNNABLE -->
+                            <g class="interactive-node" onclick="setDiagDetail('state_runnable')">
+                                <circle cx="270" cy="80" r="40" fill="url(#blueGrad)" stroke="#7c4dff" stroke-width="2"/>
+                                <text x="270" y="84" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">RUNNABLE</text>
+                            </g>
+
+                            <!-- RUNNABLE -> RUNNING arrow -->
+                            <path d="M 310 80 L 390 80" stroke="#00e5ff" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="350" y="70" fill="#00e5ff" font-size="9" text-anchor="middle">scheduler</text>
+
+                            <!-- State: RUNNING -->
+                            <g class="interactive-node" onclick="setDiagDetail('state_running')">
+                                <circle cx="440" cy="80" r="40" fill="url(#greenGrad)" stroke="#00e676" stroke-width="2"/>
+                                <text x="440" y="84" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">RUNNING</text>
+                            </g>
+
+                            <!-- RUNNING -> DEAD arrow -->
+                            <path d="M 480 80 L 520 80 L 520 250 M 520 250 L 310 250" stroke="#ff3d00" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+                            <text x="535" y="170" fill="#ff3d00" font-size="10" text-anchor="middle">run() ends</text>
+
+                            <!-- State: DEAD -->
+                            <g class="interactive-node" onclick="setDiagDetail('state_dead')">
+                                <circle cx="270" cy="250" r="40" fill="#1f0a0d" stroke="#ff3d00" stroke-width="2"/>
+                                <text x="270" y="254" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">DEAD</text>
+                            </g>
+
+                            <!-- RUNNING -> WAITING/BLOCKED arrow -->
+                            <path d="M 440 120 L 440 320" stroke="#ffea00" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="480" y="220" fill="#ffea00" font-size="9" text-anchor="middle">sleep() / wait()</text>
+
+                            <!-- State: WAITING / BLOCKED -->
+                            <g class="interactive-node" onclick="setDiagDetail('state_blocked')">
+                                <rect x="340" y="320" width="200" height="60" rx="10" fill="url(#purpleGrad)" stroke="#ffea00" stroke-width="2"/>
+                                <text x="440" y="355" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">WAITING / BLOCKED</text>
+                            </g>
+
+                            <!-- WAITING/BLOCKED -> RUNNABLE arrow -->
+                            <path d="M 340 350 L 190 350 L 190 120 L 235 105" stroke="#00e5ff" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+                            <text x="150" y="240" fill="#00e5ff" font-size="9" text-anchor="middle">notify() / lock</text>
+                        </svg>
+
+                        <!-- JDBC Drivers SVG Diagram -->
+                        <svg id="svg-jdbc" width="100%" height="450" viewBox="0 0 600 450" style="display: none;">
+                            <!-- Title Row -->
+                            <text x="300" y="30" fill="#8a8eaf" font-size="13" font-weight="700" text-anchor="middle">4 Types of JDBC Drivers</text>
+
+                            <!-- Type 1: JDBC-ODBC Bridge -->
+                            <g class="interactive-node" onclick="setDiagDetail('jdbc_t1')">
+                                <rect x="50" y="70" width="220" height="70" rx="10" fill="url(#greyGrad)" stroke="#ff3d00" stroke-width="1.5"/>
+                                <text x="160" y="95" fill="#fff" font-size="11.5" font-weight="700" text-anchor="middle">Type 1: JDBC-ODBC Bridge</text>
+                                <text x="160" y="112" fill="#ff5252" font-size="9.5" text-anchor="middle">❌ Slow, needs local ODBC install</text>
+                                <text x="160" y="125" fill="#8a8eaf" font-size="8.5" text-anchor="middle">Java App → JDBC → ODBC Bridge → DB</text>
+                            </g>
+
+                            <!-- Type 2: Native API -->
+                            <g class="interactive-node" onclick="setDiagDetail('jdbc_t2')">
+                                <rect x="330" y="70" width="220" height="70" rx="10" fill="url(#greyGrad)" stroke="#ff3d00" stroke-width="1.5"/>
+                                <text x="440" y="95" fill="#fff" font-size="11.5" font-weight="700" text-anchor="middle">Type 2: Native API Driver</text>
+                                <text x="440" y="112" fill="#ff5252" font-size="9.5" text-anchor="middle">❌ Platform-dependent native library</text>
+                                <text x="440" y="125" fill="#8a8eaf" font-size="8.5" text-anchor="middle">Java App → JDBC → Native DB Lib → DB</text>
+                            </g>
+
+                            <!-- Type 3: Middleware Network -->
+                            <g class="interactive-node" onclick="setDiagDetail('jdbc_t3')">
+                                <rect x="50" y="170" width="220" height="70" rx="10" fill="url(#greyGrad)" stroke="#ffea00" stroke-width="1.5"/>
+                                <text x="160" y="195" fill="#fff" font-size="11.5" font-weight="700" text-anchor="middle">Type 3: Network Protocol</text>
+                                <text x="160" y="212" fill="#ffd600" font-size="9.5" text-anchor="middle">✅ Pure Java but needs extra server</text>
+                                <text x="160" y="225" fill="#8a8eaf" font-size="8.5" text-anchor="middle">Java App → JDBC → Middleware → DB</text>
+                            </g>
+
+                            <!-- Type 4: Thin Driver (RECOMMENDED/BEST) -->
+                            <g class="interactive-node" onclick="setDiagDetail('jdbc_t4')">
+                                <rect x="330" y="170" width="220" height="90" rx="10" fill="url(#greenGrad)" stroke="#00e676" stroke-width="2.5"/>
+                                <text x="440" y="195" fill="#fff" font-size="12" font-weight="800" text-anchor="middle">Type 4: Thin Driver (Best)</text>
+                                <text x="440" y="212" fill="#69f0ae" font-size="10" font-weight="700" text-anchor="middle">⭐ 100% Pure Java &amp; Fastest</text>
+                                <text x="440" y="228" fill="#e0e0e0" font-size="9.5" text-anchor="middle">Connects directly via sockets</text>
+                                <text x="440" y="242" fill="#a29bfe" font-size="8.5" font-family="Fira Code">Java App → DB (direct!)</text>
+                            </g>
+
+                            <!-- Quick comparison text note -->
+                            <text x="300" y="320" fill="#8a8eaf" font-size="12" text-anchor="middle">Type 4 connects directly. Remember this for exam!</text>
+                            <path d="M 440 265 L 440 300" stroke="#00e676" stroke-width="1.5" stroke-dasharray="4,4" fill="none"/>
+                        </svg>
+                    </div>
+
+                    <!-- Side Explanatory Card -->
+                    <div class="diagram-info-panel">
+                        <div class="diagram-info-title" id="diag-title">
+                            Select a Component
+                        </div>
+                        <div class="diagram-info-body" id="diag-body">
+                            Click any of the colored boxes in the diagram layout to show the exact explanation to write in your exam paper.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: STUDY FLASHCARDS -->
+            <section id="view-flashcards" class="view-section">
+                <div class="section-header">
+                    <h2>Mastery Flashcards</h2>
+                    <p>Flip to verify answers. Mark "Got It" to master a concept, or "Review" to keep it in the loop.</p>
+                </div>
+
+                <div class="flashcard-container">
+                    <div class="flashcard" id="active-card" onclick="flipCard()">
+                        <!-- Front Face -->
+                        <div class="card-face card-front">
+                            <div class="card-category" id="card-front-cat">Q1 - Platform Independent</div>
+                            <div class="card-question" id="card-front-q">Why is Java called Platform Independent?</div>
+                            <div class="card-hints">
+                                <div class="card-hint-item"><span>💡</span> Click to reveal code &amp; diagram details</div>
+                            </div>
+                        </div>
+                        <!-- Back Face -->
+                        <div class="card-face card-back">
+                            <div class="card-category" id="card-back-cat">Q1 - Explanation &amp; Code</div>
+                            <div class="card-answer" id="card-back-ans">
+                                <!-- Filled by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-controls">
+                    <button class="deck-btn dont-know" onclick="answerFlashcard(false)">❌ Review Again</button>
+                    <button class="deck-btn know" onclick="answerFlashcard(true)">✅ Got It!</button>
+                </div>
+
+                <div class="card-counter" id="card-counts">
+                    Card 1 of 15
+                </div>
+            </section>
+
+            <!-- SECTION 4: PRACTICE QUIZ -->
+            <section id="view-quiz" class="view-section">
+                <div class="section-header">
+                    <h2>Active Recall Quiz</h2>
+                    <p>Practice with targeted questions, drag-and-drop ordering, and code completion.</p>
+                </div>
+
+                <!-- Quiz Core Container -->
+                <div class="quiz-card" id="quiz-card-box">
+                    <div class="quiz-progress">
+                        <span id="quiz-progress-text">Question 1 of 10</span>
+                        <div class="quiz-progress-bar">
+                            <div class="quiz-progress-fill" id="quiz-progress-bar-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="question-text" id="quiz-question-text">
+                        What does javac compile Java code into?
+                    </div>
+
+                    <!-- Dynamic options area -->
+                    <div id="quiz-options-area">
+                        <!-- Filled by JS (MCQ Buttons, Matching lines, or text inputs) -->
+                    </div>
+
+                    <!-- Explanation Alert block -->
+                    <div class="quiz-feedback" id="quiz-feedback-block">
+                        <div class="quiz-feedback-title" id="quiz-feedback-title">Correct!</div>
+                        <div id="quiz-feedback-text">Explanation goes here.</div>
+                    </div>
+
+                    <div class="quiz-btn-row">
+                        <button class="quiz-next-btn" id="quiz-action-btn" onclick="handleQuizAction()">Submit Answer</button>
+                    </div>
+                </div>
+
+                <!-- Quiz Result view -->
+                <div class="quiz-card quiz-result-view" id="quiz-result-box">
+                    <div class="result-score" id="result-score-percent">80%</div>
+                    <div class="result-title" id="result-score-title">Looking Good!</div>
+                    <div class="result-desc" id="result-score-desc">
+                        You got 8 out of 10 questions correct. You are well prepared for the exam!
+                    </div>
+                    <button class="quiz-next-btn" onclick="restartQuiz()">Practice Again</button>
+                </div>
+            </section>
+
+            <!-- SECTION 5: CHEAT SHEETS -->
+            <section id="view-cheats" class="view-section">
+                <div class="section-header">
+                    <h2>Quick Cheat Sheets</h2>
+                    <p>All core programs, templates, and diagram steps. Click copy buttons to capture code.</p>
+                </div>
+
+                <div class="cheat-grid">
+                    <!-- Q1 -->
+                    <div class="cheat-card">
+                        <div class="cheat-card-header">
+                            <span class="cheat-title">Q1: Java Features</span>
+                            <span class="cheat-badge">5 headings</span>
+                        </div>
+                        <div class="cheat-content">
+                            <ul>
+                                <li><strong>Platform Independent</strong>: Bytecode runs on any JVM.</li>
+                                <li><strong>Object Oriented</strong>: Everything is an object.</li>
+                                <li><strong>Multithreaded</strong>: Built-in thread support.</li>
+                                <li><strong>Secure</strong>: No pointers, bytecode verifier, Security manager.</li>
+                                <li><strong>Robust</strong>: Exception handling &amp; strong memory.</li>
+                            </ul>
+                            <div class="code-container">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><code class="language-java">// Robust demo
+try {
+    int x = 10 / 0;
+} catch(ArithmeticException e) {
+    System.out.println("Caught: " + e.getMessage());
+} finally {
+    System.out.println("Continues!");
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="cheat-card">
+                        <div class="cheat-card-header">
+                            <span class="cheat-title">Q2: OOP &amp; Interface</span>
+                            <span class="cheat-badge">SI &amp; Diamond</span>
+                        </div>
+                        <div class="cheat-content">
+                            <ul>
+                                <li><strong>Diamond Problem</strong>: B &amp; C have same method, D extends both = Ambiguity.</li>
+                                <li><strong>Interface Solution</strong>: implements both, override, call <code>B.super.show()</code>.</li>
+                                <li><strong>SI Formula</strong>: <code>(p * r * t) / 100</code></li>
+                            </ul>
+                            <div class="code-container">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><code class="language-java">// Multiple Inheritance Interface
+interface B { default void show() { System.out.println("B"); } }
+interface C { default void show() { System.out.println("C"); } }
+class D implements B, C {
+    public void show() {
+        B.super.show(); // select B
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="cheat-card">
+                        <div class="cheat-card-header">
+                            <span class="cheat-title">Q3: Exception &amp; Threads</span>
+                            <span class="cheat-badge">Custom Exc</span>
+                        </div>
+                        <div class="cheat-content">
+                            <ul>
+                                <li><strong>Custom Exc</strong>: extends Exception, constructor uses <code>super(msg)</code>.</li>
+                                <li><strong>Checked</strong>: Must handle. <strong>Unchecked</strong>: Runtime.</li>
+                                <li><strong>Priority</strong>: MIN (1), NORM (5), MAX (10).</li>
+                            </ul>
+                            <div class="code-container">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><code class="language-java">// Custom Exception template
+class MinBalException extends Exception {
+    MinBalException(String m) { super(m); }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="cheat-card">
+                        <div class="cheat-card-header">
+                            <span class="cheat-title">Q4: ArrayList &amp; Swing</span>
+                            <span class="cheat-badge">GUI Code</span>
+                        </div>
+                        <div class="cheat-content">
+                            <ul>
+                                <li><strong>Swing components</strong>: JLabel, JTextField, JButton, JTextArea.</li>
+                                <li><strong>Position</strong>: <code>setBounds(x, y, w, h)</code>.</li>
+                                <li><strong>Action</strong>: <code>implements ActionListener</code>, <code>actionPerformed</code>.</li>
+                            </ul>
+                            <div class="code-container">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><code class="language-java">// Action Listener template
+public void actionPerformed(ActionEvent e) {
+    if(e.getSource() == btnSubmit) {
+        taResult.setText(tfName.getText());
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="cheat-card">
+                        <div class="cheat-card-header">
+                            <span class="cheat-title">Q5: JDBC Steps</span>
+                            <span class="cheat-badge">6 steps SQL</span>
+                        </div>
+                        <div class="cheat-content">
+                            <ul>
+                                <li><strong>Driver</strong>: Type 4 (Thin) is direct socket.</li>
+                                <li><strong>Read query</strong>: <code>executeQuery()</code>.</li>
+                                <li><strong>Write/Update</strong>: <code>executeUpdate()</code>.</li>
+                            </ul>
+                            <div class="code-container">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><code class="language-java">// 6 steps JDBC snippet
+Class.forName("com.mysql.jdbc.Driver");
+Connection c = DriverManager.getConnection(url, u, p);
+Statement s = c.createStatement();
+ResultSet rs = s.executeQuery("SELECT...");
+while(rs.next()) { System.out.println(rs.getInt(1)); }
+rs.close(); s.close(); c.close();</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Audio Synthesis and App Logic Script -->
+    <script>
+        // --- Web Audio Synth for Custom Sound Effects ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            // Resume context if suspended (browser security)
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            const now = audioCtx.currentTime;
+            
+            if (type === 'correct') {
+                // Happy double-chime (C5 then G5)
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(783.99, now + 0.12); // G5
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.15, now + 0.05);
+                gain.gain.linearRampToValueAtTime(0, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            } else if (type === 'wrong') {
+                // Sad buzzer (fading sawtooth at 120Hz)
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.linearRampToValueAtTime(80, now + 0.25);
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.18, now + 0.05);
+                gain.gain.linearRampToValueAtTime(0, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'complete') {
+                // Celebratory arpeggio
+                const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+                notes.forEach((freq, idx) => {
+                    const oscNote = audioCtx.createOscillator();
+                    const gainNote = audioCtx.createGain();
+                    oscNote.connect(gainNote);
+                    gainNote.connect(audioCtx.destination);
+                    oscNote.type = 'triangle';
+                    oscNote.frequency.setValueAtTime(freq, now + idx * 0.1);
+                    gainNote.gain.setValueAtTime(0, now + idx * 0.1);
+                    gainNote.gain.linearRampToValueAtTime(0.12, now + idx * 0.1 + 0.03);
+                    gainNote.gain.linearRampToValueAtTime(0, now + idx * 0.1 + 0.35);
+                    oscNote.start(now + idx * 0.1);
+                    oscNote.stop(now + idx * 0.1 + 0.4);
+                });
+            }
+        }
+
+        // --- Countdown Timer Code ---
+        let timerSeconds = 3600; // 60 mins default
+        let timerInterval = null;
+        let isTimerRunning = false;
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            const display = document.getElementById('exam-timer');
+            display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            
+            // Critical warning highlights
+            if (timerSeconds <= 300) { // 5 mins
+                display.style.color = '#ff3d00';
+                display.style.textShadow = '0 0 15px rgba(255,61,0,0.6)';
+            } else if (timerSeconds <= 600) { // 10 mins
+                display.style.color = '#ffea00';
+                display.style.textShadow = '0 0 15px rgba(255,234,0,0.5)';
+            } else {
+                display.style.color = 'var(--cyan)';
+                display.style.textShadow = '0 0 10px var(--cyan-glow)';
+            }
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('timer-toggle-btn');
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                btn.textContent = 'Start';
+            } else {
+                if (timerSeconds > 0) {
+                    timerInterval = setInterval(() => {
+                        timerSeconds--;
+                        updateTimerDisplay();
+                        if (timerSeconds <= 0) {
+                            clearInterval(timerInterval);
+                            isTimerRunning = false;
+                            btn.textContent = 'Done';
+                            playSound('wrong');
+                            alert("Time is up! Head over to your exam room!");
+                        }
+                    }, 1000);
+                    isTimerRunning = true;
+                    btn.textContent = 'Pause';
+                }
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerSeconds = 3600;
+            document.getElementById('timer-toggle-btn').textContent = 'Start';
+            updateTimerDisplay();
+        }
+
+        function setCustomTimer() {
+            const val = prompt("Enter exam countdown time in minutes:", "60");
+            const parsed = parseInt(val);
+            if (!isNaN(parsed) && parsed > 0) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                timerSeconds = parsed * 60;
+                document.getElementById('timer-toggle-btn').textContent = 'Start';
+                updateTimerDisplay();
+            }
+        }
+
+        // Start timer by default
+        toggleTimer();
+
+        // --- Single Page View Switcher ---
+        function switchView(viewId, navItem) {
+            // Remove active from all views
+            document.querySelectorAll('.view-section').forEach(view => {
+                view.classList.remove('active');
+            });
+            // Show new view
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            
+            // Update nav selection
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            if (navItem) {
+                navItem.classList.add('active');
+            }
+        }
+
+        // --- Diagram Detail Information Box Database ---
+        const diagramData = {
+            java_src: {
+                title: "Java Source Code (.java)",
+                body: "This is the developer's human-readable program code (e.g. <code>Demo.java</code>). It must be compiled using <code>javac</code> to produce platform-independent bytecode."
+            },
+            bytecode: {
+                title: "Java Bytecode (.class file)",
+                body: "A highly optimized stream of machine-like instructions output by the compiler. It is not native to any processor but is parsed and run by the <strong>JVM</strong>. This is what enables <em>'Write Once, Run Anywhere'</em>."
+            },
+            class_loader: {
+                title: "Class Loader Subsystem",
+                body: "Dynamically loads, links, and initializes Java classes (<code>.class</code> files) into the JVM's Runtime Data Area when they are referenced for the first time."
+            },
+            method_area: {
+                title: "Method Area",
+                body: "A shared runtime data zone that stores class-level metadata structures: runtime constant pools, field types, method code, and static class variables."
+            },
+            heap: {
+                title: "Heap Memory",
+                body: "The central data area where <strong>all objects</strong> and their instance variables are allocated. The <strong>Garbage Collector (GC)</strong> works here to automatically reclaim unreferenced memory."
+            },
+            stack: {
+                title: "Stack Memory",
+                body: "Stores individual frame records for method calls. Each thread gets its own private stack. Frames hold local variables, method arguments, and intermediate evaluation parameters."
+            },
+            pc_register: {
+                title: "Program Counter (PC) Register",
+                body: "Each thread has a private PC Register containing the memory address of the JVM instruction currently being executed by that thread."
+            },
+            interpreter: {
+                title: "Interpreter",
+                body: "Reads bytecode commands and executes them directly step-by-step. Fast to start running, but executes slower than fully compiled native code."
+            },
+            jit: {
+                title: "Just-In-Time (JIT) Compiler",
+                body: "Analyzes method calls to find 'hot spots' of execution. Compiles repeated bytecode patterns directly into native machine code for maximum speed."
+            },
+            gc: {
+                title: "Garbage Collector (GC)",
+                body: "An execution process that checks heap memory, identifies objects no longer reachable, and automatically deallocates them to prevent memory leaks."
+            },
+            state_new: {
+                title: "NEW State",
+                body: "The thread object has been created (e.g., <code>Thread t = new Thread()</code>) but the <code>start()</code> method has not yet been invoked. CPU resources are not allocated."
+            },
+            state_runnable: {
+                title: "RUNNABLE State",
+                body: "The thread is active after <code>t.start()</code>. It is ready for execution and placed in the thread pool queue, waiting for the OS CPU scheduler to dispatch it."
+            },
+            state_running: {
+                title: "RUNNING State",
+                body: "The CPU scheduler has selected the thread. The JVM's execution engine is executing the thread's <code>run()</code> method."
+            },
+            state_blocked: {
+                title: "WAITING / BLOCKED State",
+                body: "The thread is temporarily inactive because it called <code>Thread.sleep()</code>, <code>Object.wait()</code>, or is blocked waiting for file/network I/O or a lock. It returns to <strong>RUNNABLE</strong> once notify() occurs or sleep expires."
+            },
+            state_dead: {
+                title: "DEAD State",
+                body: "The execution of the thread's <code>run()</code> method has completed successfully, or was terminated by an unhandled exception. It cannot be restarted."
+            },
+            jdbc_t1: {
+                title: "Type 1: JDBC-ODBC Bridge",
+                body: "Translates JDBC calls into Microsoft ODBC queries. <strong>Pros:</strong> simple database access. <strong>Cons:</strong> slowest performance, obsolete/removed in modern Java, requires ODBC drivers pre-installed on the client PC."
+            },
+            jdbc_t2: {
+                title: "Type 2: Native-API Driver",
+                body: "Translates JDBC calls directly into native C/C++ client libraries for the target database. <strong>Pros:</strong> faster than Type 1. <strong>Cons:</strong> platform-dependent; database vendor client libraries must be pre-installed on every client machine."
+            },
+            jdbc_t3: {
+                title: "Type 3: Network Protocol (Middleware)",
+                body: "Sends JDBC calls to an intermediate middleware server which translates them to database specific requests. <strong>Pros:</strong> pure Java driver, client needs no database driver files. <strong>Cons:</strong> needs extra server setup and network overhead."
+            },
+            jdbc_t4: {
+                title: "Type 4: Thin Driver",
+                body: "Translates JDBC calls directly into vendor-specific database network protocols via TCP/IP sockets. <strong>Pros:</strong> 100% pure Java, fastest connection speed, requires zero installation or configuration on client machines. <strong>Used everywhere today.</strong>"
+            }
+        };
+
+        function setDiagDetail(key) {
+            const data = diagramData[key];
+            if (data) {
+                document.getElementById('diag-title').innerHTML = `⚡ ${data.title}`;
+                document.getElementById('diag-body').innerHTML = data.body;
+                
+                // Highlight corresponding node
+                document.querySelectorAll('.interactive-node').forEach(el => el.classList.remove('active'));
+                
+                // Find node by event source or target
+                const evt = window.event;
+                if (evt && evt.currentTarget) {
+                    evt.currentTarget.classList.add('active');
+                }
+            }
+        }
+
+        function switchDiagram(type, btn) {
+            // Toggle active button
+            btn.parentElement.querySelectorAll('.diagram-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Hide all SVGs
+            document.getElementById('svg-jvm').style.display = 'none';
+            document.getElementById('svg-threads').style.display = 'none';
+            document.getElementById('svg-jdbc').style.display = 'none';
+
+            // Show selected
+            document.getElementById(`svg-${type}`).style.display = 'block';
+
+            // Reset detail info panel
+            document.getElementById('diag-title').textContent = "Select a Component";
+            document.getElementById('diag-body').textContent = "Click any of the highlighted modules in the diagram above to display notes.";
+        }
+
+        // --- Flashcard System Database ---
+        const flashcards = [
+            {
+                category: "Q1 - Platform Independent",
+                question: "What is 'Write Once, Run Anywhere' (WORA) in Java?",
+                answer: "<h4>Platform Independence</h4>Java source code compiles to platform-neutral bytecode (<code>.class</code> files) instead of native machine code. The <strong>Java Virtual Machine (JVM)</strong> on the host machine interprets or JIT-compiles this bytecode to the host OS machine language. Hence code runs on any OS with a JVM."
+            },
+            {
+                category: "Q1 - OOP Features",
+                question: "Explain the Object-Oriented concept of Java in 3 lines.",
+                answer: "<h4>Object Oriented Concepts</h4>Everything in Java is modeled as an Object. Supports the 4 core pillars:<ul><li><strong>Encapsulation</strong>: Binding data and code (private variables, getters/setters).</li><li><strong>Inheritance</strong>: Code reusability (extends keyword).</li><li><strong>Polymorphism</strong>: Overloading/Overriding.</li><li><strong>Abstraction</strong>: Hiding internal details (Abstract classes &amp; Interfaces).</li></ul>"
+            },
+            {
+                category: "Q1 - Security",
+                question: "Write 3 reasons why Java is highly secure.",
+                answer: "<h4>Java Security Pillars</h4><ol><li><strong>No Pointers</strong>: Memory access is managed by the JVM; developers cannot direct-read/write addresses.</li><li><strong>Bytecode Verifier</strong>: Checks compiled code for unauthorized memory access or stack corruption before executing it.</li><li><strong>Security Manager</strong>: Controls file system, network socket, and device permissions at runtime.</li></ol>"
+            },
+            {
+                category: "Q2 - OOP Inheritance",
+                question: "What is the Diamond Problem and how is it resolved in Java?",
+                answer: "<h4>The Diamond Problem</h4>In multiple inheritance, if Class D extends both Class B and C, and both parents define method <code>show()</code>, the compiler cannot determine which method D inherits (ambiguity).<br>Java classes cannot multiple-inherit.<br><strong>Solution:</strong> Use Interfaces. Resolve conflict by overriding: <pre>public void show() {\n    B.super.show(); // select parent B\n}</pre>"
+            },
+            {
+                category: "Q2 - Abstract vs Interface",
+                question: "Write three core differences between Abstract Class and Interface.",
+                answer: "<h4>Comparison Table Summary</h4><table><tr><th>Feature</th><th>Abstract Class</th><th>Interface</th></tr><tr><td>Constructor</td><td>✅ Yes</td><td>❌ No</td></tr><tr><td>Inheritance</td><td>Single only (extends)</td><td>Multiple (implements)</td></tr><tr><td>Variables</td><td>Any type</td><td>public static final only</td></tr></table>"
+            },
+            {
+                category: "Q3 - Exception Types",
+                question: "Explain Checked vs Unchecked Exceptions in Java.",
+                answer: "<h4>Checked vs Unchecked</h4><ul><li><strong>Checked Exceptions</strong>: Checked at compile time. The developer MUST handle them (e.g. using try-catch or throws). Example: <code>IOException</code>, <code>SQLException</code>.</li><li><strong>Unchecked Exceptions</strong>: Occur at runtime; not checked by the compiler. Example: <code>ArithmeticException</code>, <code>NullPointerException</code>.</li></ul>"
+            },
+            {
+                category: "Q3 - Custom Exceptions",
+                question: "What is the template format to write a Custom Exception?",
+                answer: "<h4>Custom Exception Template</h4><pre>class MinBalanceException extends Exception {\n    MinBalanceException(String msg) {\n        super(msg); // pass to parent Exception\n    }\n}</pre>Throw it using: <code>throw new MinBalanceException(\"Msg\");</code>"
+            },
+            {
+                category: "Q3 - Thread Priorities",
+                question: "State the Thread priority constants and their numeric values.",
+                answer: "<h4>Thread Priorities</h4>Java Thread priorities range from 1 to 10:<ul><li><code>Thread.MIN_PRIORITY</code> = 1</li><li><code>Thread.NORM_PRIORITY</code> = 5 (Default)</li><li><code>Thread.MAX_PRIORITY</code> = 10</li></ul>Use methods: <code>setPriority(int)</code> &amp; <code>getPriority()</code>."
+            },
+            {
+                category: "Q4 - Collections List",
+                question: "Explain the ArrayList collection class and list 3 methods.",
+                answer: "<h4>ArrayList Implementation</h4>ArrayList provides a resizable dynamic array. Size grows automatically as elements are added. It maintains insertion order.<ul><li><code>list.add(value)</code>: Inserts element.</li><li><code>list.remove(value)</code>: Removes element.</li><li><code>list.iterator()</code>: Obtains iterator cursor.</li></ul>"
+            },
+            {
+                category: "Q4 - Swing GUI",
+                question: "What are the 3 steps to build forms in Swing?",
+                answer: "<h4>Swing Form Formula</h4><ol><li><strong>Declare Components</strong>: <code>JLabel, JTextField, JButton</code>, etc.</li><li><strong>Position Elements</strong>: Clear layout (<code>setLayout(null)</code>) and call <code>setBounds(x, y, width, height)</code>.</li><li><strong>Event Binding</strong>: Call <code>addActionListener(this)</code> and handle clicks in <code>actionPerformed(ActionEvent e)</code>.</li></ol>"
+            },
+            {
+                category: "Q5 - JDBC Drivers",
+                question: "Explain the Type 4 JDBC Driver.",
+                answer: "<h4>Type 4 Thin Driver</h4>This driver translates JDBC calls directly into vendor-specific database network protocol via socket connections. Written entirely in Java. Fastest connection speed, requires zero local drivers or native client configuration."
+            },
+            {
+                category: "Q5 - JDBC steps",
+                question: "State the 6 steps of executing a query using JDBC.",
+                answer: "<h4>6 Steps to Connect Database</h4><ol><li><strong>Load Driver</strong>: <code>Class.forName(\"...\")</code></li><li><strong>Get Connection</strong>: <code>DriverManager.getConnection()</code></li><li><strong>Create Statement</strong>: <code>con.createStatement()</code></li><li><strong>Execute Query</strong>: <code>stmt.executeQuery()</code> or <code>executeUpdate()</code></li><li><strong>Process Results</strong>: Loop <code>rs.next()</code></li><li><strong>Close Connections</strong>: Close Rs, Statement, Connection.</li></ol>"
+            }
+        ];
+
+        let currentCardIndex = 0;
+        let masteredCardsCount = 0;
+        const masteredCards = new Array(flashcards.length).fill(false);
+
+        function updateFlashcardUI() {
+            const card = flashcards[currentCardIndex];
+            document.getElementById('card-front-cat').textContent = card.category;
+            document.getElementById('card-front-q').textContent = card.question;
+            
+            document.getElementById('card-back-cat').textContent = card.category + " - Answer";
+            document.getElementById('card-back-ans').innerHTML = card.answer;
+            
+            const cardEl = document.getElementById('active-card');
+            cardEl.classList.remove('flipped');
+            
+            // Highlight card state if already reviewed
+            if (masteredCards[currentCardIndex]) {
+                cardEl.style.borderColor = 'var(--success)';
+            } else {
+                cardEl.style.borderColor = 'var(--border-color)';
+            }
+
+            document.getElementById('card-counts').textContent = `Card ${currentCardIndex + 1} of ${flashcards.length}`;
+            
+            // Sync dashboard progress
+            document.getElementById('dash-flashcard-mastery').textContent = `${masteredCardsCount}/${flashcards.length}`;
+            const masteryPct = Math.round((masteredCardsCount / flashcards.length) * 100);
+            updateReadinessScore();
+        }
+
+        function flipCard() {
+            document.getElementById('active-card').classList.toggle('flipped');
+        }
+
+        function answerFlashcard(isMastered) {
+            if (isMastered && !masteredCards[currentCardIndex]) {
+                masteredCards[currentCardIndex] = true;
+                masteredCardsCount++;
+                playSound('correct');
+            } else if (!isMastered && masteredCards[currentCardIndex]) {
+                masteredCards[currentCardIndex] = false;
+                masteredCardsCount--;
+                playSound('wrong');
+            }
+            
+            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+            updateFlashcardUI();
+        }
+
+        // Initialize flashcard layout
+        updateFlashcardUI();
+
+        // --- Active Recall Quiz Database & State ---
+        const quizQuestions = [
+            {
+                type: "mcq",
+                category: "Q1",
+                question: "Which component of the JVM converts bytecode into native machine instructions at runtime for high performance?",
+                options: [
+                    "Class Loader Subsystem",
+                    "Just-in-Time (JIT) Compiler",
+                    "Garbage Collector",
+                    "PC Register"
+                ],
+                correct: 1,
+                explanation: "The JIT Compiler analyzes method executions at runtime and compiles hot code segments into native machine code to maximize execution speed."
+            },
+            {
+                type: "mcq",
+                category: "Q1",
+                question: "What is the primary function of the JVM's Heap area?",
+                options: [
+                    "Stores local variables and active method call parameters",
+                    "Loads and registers compile files",
+                    "Stores all declared objects and their instance variables",
+                    "Keeps track of executing instruction memory addresses"
+                ],
+                correct: 2,
+                explanation: "The Heap holds all instantiated objects. The Garbage Collector (GC) runs inside this area to clean up unreferenced objects."
+            },
+            {
+                type: "mcq",
+                category: "Q2",
+                question: "Why does Java not support multiple inheritance with classes?",
+                options: [
+                    "Because classes consume too much heap space.",
+                    "Because of the Diamond Problem, which leads to ambiguity when resolving identical methods in parent classes.",
+                    "Because Java only supports interfaces for data declaration.",
+                    "Because multiple class loading causes classloader stack overflows."
+                ],
+                correct: 1,
+                explanation: "If class A has B & C as children, and B & C both declare void show(), a class D extending B & C causes ambiguity for the compiler."
+            },
+            {
+                type: "mcq",
+                category: "Q2",
+                question: "Which of the following is true for an Interface compared to an Abstract Class?",
+                options: [
+                    "Interfaces can declare class constructors.",
+                    "Interfaces support multiple inheritance and contain no constructors.",
+                    "Interfaces can only contain concrete methods with bodies.",
+                    "Interfaces are subclassed using the 'extends' keyword."
+                ],
+                correct: 1,
+                explanation: "Interfaces do not support constructors and allow multiple inheritance. Abstract classes support constructors but only single inheritance."
+            },
+            {
+                type: "blank",
+                category: "Q3",
+                question: "Complete the keyword blanks in this custom exception class declaration:",
+                code: "class InsolventException [BLANK1] Exception {\n    InsolventException(String msg) {\n        [BLANK2](msg);\n    }\n}",
+                blanks: ["extends", "super"],
+                options: ["extends", "implements", "super", "this", "throws"],
+                explanation: "Custom exceptions subclass standard Java exceptions using 'extends', and delegate the message string to the parent using 'super'."
+            },
+            {
+                type: "mcq",
+                category: "Q3",
+                question: "What is the default priority value assigned to a thread when it is created?",
+                options: [
+                    "Thread.MIN_PRIORITY (Value 1)",
+                    "Thread.NORM_PRIORITY (Value 5)",
+                    "Thread.MAX_PRIORITY (Value 10)",
+                    "Priority is 0 by default"
+                ],
+                correct: 1,
+                explanation: "By default, threads run with Thread.NORM_PRIORITY, which equals 5. MIN is 1 and MAX is 10."
+            },
+            {
+                type: "mcq",
+                category: "Q3",
+                question: "In the Thread Lifecycle, which state does a thread enter when the sleep() or wait() method is called?",
+                options: [
+                    "NEW",
+                    "RUNNABLE",
+                    "RUNNING",
+                    "WAITING / BLOCKED",
+                    "DEAD"
+                ],
+                correct: 3,
+                explanation: "Calling sleep() or wait() pauses thread execution and transitions the thread to the WAITING/BLOCKED state."
+            },
+            {
+                type: "blank",
+                category: "Q4",
+                question: "Fill in the blanks to complete this ArrayList iteration loop:",
+                code: "ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;();\nIterator&lt;Integer&gt; it = list.[BLANK1]();\nwhile(it.[BLANK2]()) {\n    System.out.println(it.next());\n}",
+                blanks: ["iterator", "hasNext"],
+                options: ["iterator", "hasNext", "next", "hasMore", "elements"],
+                explanation: "Use list.iterator() to instantiate an Iterator. Check for remaining elements using it.hasNext() inside the loop."
+            },
+            {
+                type: "mcq",
+                category: "Q4",
+                question: "Which layout manager method is used in Swing to set explicit coordinate positions and dimensions?",
+                options: [
+                    "setSize(w, h)",
+                    "setPosition(x, y)",
+                    "setBounds(x, y, w, h)",
+                    "setLayoutParams(x, y, w, h)"
+                ],
+                correct: 2,
+                explanation: "When setLayout(null) is called, setBounds(x, y, width, height) is used to manually position components."
+            },
+            {
+                type: "order",
+                category: "Q5",
+                question: "Arrange the 6 standard JDBC database steps in the correct execution order:",
+                items: [
+                    "Load Driver (Class.forName)",
+                    "Get Connection (DriverManager.getConnection)",
+                    "Create SQL Statement (createStatement)",
+                    "Execute Query (executeQuery / executeUpdate)",
+                    "Process Results (while rs.next)",
+                    "Close Connection (close rs, stmt, con)"
+                ],
+                correctOrder: [0, 1, 2, 3, 4, 5], // items are scrambled first, order checked against this indices
+                explanation: "Steps are: 1. Load Driver, 2. Get Connection, 3. Create Statement, 4. Execute, 5. Read Results, 6. Close resource connections."
+            }
+        ];
+
+        let activeQuizQuestions = [...quizQuestions];
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let isQuestionSubmitted = false;
+        let selectedOption = null;
+        let placedBlanks = {};
+        let orderIndices = [];
+
+        function startTargetQuiz(target) {
+            switchView('quiz');
+            if (target === 'q1') activeQuizQuestions = quizQuestions.filter(q => q.category === 'Q1');
+            else if (target === 'q2') activeQuizQuestions = quizQuestions.filter(q => q.category === 'Q2');
+            else if (target === 'q3') activeQuizQuestions = quizQuestions.filter(q => q.category === 'Q3');
+            else if (target === 'q4') activeQuizQuestions = quizQuestions.filter(q => q.category === 'Q4');
+            else if (target === 'q5') activeQuizQuestions = quizQuestions.filter(q => q.category === 'Q5');
+            else activeQuizQuestions = [...quizQuestions];
+            
+            restartQuiz();
+        }
+
+        function restartQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-card-box').style.display = 'block';
+            document.getElementById('quiz-result-box').style.display = 'none';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            isQuestionSubmitted = false;
+            selectedOption = null;
+            placedBlanks = {};
+            
+            const q = activeQuizQuestions[currentQuizIndex];
+            
+            // Progress Bar Update
+            document.getElementById('quiz-progress-text').textContent = `Question ${currentQuizIndex + 1} of ${activeQuizQuestions.length}`;
+            const progressPercent = ((currentQuizIndex) / activeQuizQuestions.length) * 100;
+            document.getElementById('quiz-progress-bar-fill').style.width = `${progressPercent}%`;
+            
+            document.getElementById('quiz-question-text').textContent = q.question;
+            
+            // Clear feedback
+            document.getElementById('quiz-feedback-block').style.display = 'none';
+            document.getElementById('quiz-action-btn').textContent = "Submit Answer";
+            
+            const optionsArea = document.getElementById('quiz-options-area');
+            optionsArea.innerHTML = '';
+
+            if (q.type === 'mcq') {
+                const grid = document.createElement('div');
+                grid.className = 'options-grid';
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerHTML = `<span>${opt}</span>`;
+                    btn.onclick = () => selectMCQOption(idx, btn);
+                    grid.appendChild(btn);
+                });
+                optionsArea.appendChild(grid);
+            } 
+            else if (q.type === 'blank') {
+                // Code view block
+                const codePre = document.createElement('pre');
+                codePre.style.background = '#0c102b';
+                codePre.style.padding = '1.5rem';
+                codePre.style.borderRadius = '12px';
+                codePre.style.fontFamily = 'var(--font-code)';
+                codePre.style.fontSize = '0.9rem';
+                codePre.style.marginBottom = '1.5rem';
+                codePre.style.border = '1px solid var(--border-color)';
+                
+                let codeHtml = q.code;
+                codeHtml = codeHtml.replace('[BLANK1]', '<span class="blank-space" id="blank-slot-1">?</span>');
+                codeHtml = codeHtml.replace('[BLANK2]', '<span class="blank-space" id="blank-slot-2">?</span>');
+                codePre.innerHTML = codeHtml;
+                optionsArea.appendChild(codePre);
+
+                // Keywords selection chips
+                const chipContainer = document.createElement('div');
+                chipContainer.className = 'blank-keywords-grid';
+                q.options.forEach(opt => {
+                    const chip = document.createElement('div');
+                    chip.className = 'keyword-chip';
+                    chip.textContent = opt;
+                    chip.onclick = () => selectKeyword(opt, chip);
+                    chipContainer.appendChild(chip);
+                });
+                optionsArea.appendChild(chipContainer);
+            }
+            else if (q.type === 'order') {
+                // Drag / drop or click ordered items
+                const list = document.createElement('div');
+                list.className = 'matching-list';
+                
+                // Generate scrambled array indices
+                orderIndices = q.items.map((_, i) => i).sort(() => Math.random() - 0.5);
+                
+                renderOrderList(list, q.items);
+                optionsArea.appendChild(list);
+            }
+        }
+
+        function renderOrderList(container, originalItems) {
+            container.innerHTML = '';
+            orderIndices.forEach((val, idx) => {
+                const row = document.createElement('div');
+                row.className = 'matching-item';
+                row.innerHTML = `
+                    <div class="matching-index">${idx + 1}</div>
+                    <div class="matching-text">${originalItems[val]}</div>
+                    <div class="matching-controls">
+                        <button class="matching-arrow" onclick="moveOrderItem(${idx}, -1)">▲</button>
+                        <button class="matching-arrow" onclick="moveOrderItem(${idx}, 1)">▼</button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function moveOrderItem(index, direction) {
+            if (isQuestionSubmitted) return;
+            const targetIdx = index + direction;
+            if (targetIdx < 0 || targetIdx >= orderIndices.length) return;
+            
+            // Swap indices
+            const temp = orderIndices[index];
+            orderIndices[index] = orderIndices[targetIdx];
+            orderIndices[targetIdx] = temp;
+            
+            const q = activeQuizQuestions[currentQuizIndex];
+            const container = document.querySelector('.matching-list');
+            renderOrderList(container, q.items);
+        }
+
+        function selectMCQOption(idx, btn) {
+            if (isQuestionSubmitted) return;
+            selectedOption = idx;
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function selectKeyword(keyword, chip) {
+            if (isQuestionSubmitted) return;
+            
+            // Place in blank 1, then blank 2
+            if (!placedBlanks.blank1) {
+                placedBlanks.blank1 = keyword;
+                document.getElementById('blank-slot-1').textContent = keyword;
+                chip.classList.add('placed');
+            } else if (!placedBlanks.blank2) {
+                placedBlanks.blank2 = keyword;
+                document.getElementById('blank-slot-2').textContent = keyword;
+                chip.classList.add('placed');
+            } else {
+                // Reset placed blanks
+                placedBlanks = {};
+                document.getElementById('blank-slot-1').textContent = "?";
+                document.getElementById('blank-slot-2').textContent = "?";
+                document.querySelectorAll('.keyword-chip').forEach(c => c.classList.remove('placed'));
+                
+                placedBlanks.blank1 = keyword;
+                document.getElementById('blank-slot-1').textContent = keyword;
+                chip.classList.add('placed');
+            }
+        }
+
+        function handleQuizAction() {
+            if (isQuestionSubmitted) {
+                // Load next question or show results
+                currentQuizIndex++;
+                if (currentQuizIndex < activeQuizQuestions.length) {
+                    loadQuizQuestion();
+                } else {
+                    showQuizResults();
+                }
+            } else {
+                verifyQuizAnswer();
+            }
+        }
+
+        function verifyQuizAnswer() {
+            const q = activeQuizQuestions[currentQuizIndex];
+            let isCorrect = false;
+            
+            if (q.type === 'mcq') {
+                if (selectedOption === null) {
+                    alert("Please select an answer option first!");
+                    return;
+                }
+                
+                isQuestionSubmitted = true;
+                const buttons = document.querySelectorAll('.option-btn');
+                
+                if (selectedOption === q.correct) {
+                    isCorrect = true;
+                    buttons[selectedOption].classList.add('correct');
+                } else {
+                    isCorrect = false;
+                    buttons[selectedOption].classList.add('wrong');
+                    buttons[q.correct].classList.add('correct');
+                }
+            } 
+            else if (q.type === 'blank') {
+                if (!placedBlanks.blank1 || !placedBlanks.blank2) {
+                    alert("Please fill in both code blanks!");
+                    return;
+                }
+                
+                isQuestionSubmitted = true;
+                if (placedBlanks.blank1 === q.blanks[0] && placedBlanks.blank2 === q.blanks[1]) {
+                    isCorrect = true;
+                    document.getElementById('blank-slot-1').style.color = 'var(--success)';
+                    document.getElementById('blank-slot-2').style.color = 'var(--success)';
+                } else {
+                    isCorrect = false;
+                    document.getElementById('blank-slot-1').style.color = 'var(--error)';
+                    document.getElementById('blank-slot-2').style.color = 'var(--error)';
+                    document.getElementById('blank-slot-1').textContent = `${placedBlanks.blank1} (Correct: ${q.blanks[0]})`;
+                    document.getElementById('blank-slot-2').textContent = `${placedBlanks.blank2} (Correct: ${q.blanks[1]})`;
+                }
+            }
+            else if (q.type === 'order') {
+                isQuestionSubmitted = true;
+                // Check if indices match 0,1,2...
+                isCorrect = orderIndices.every((val, idx) => val === q.correctOrder[idx]);
+                
+                const rows = document.querySelectorAll('.matching-item');
+                rows.forEach((row, idx) => {
+                    if (orderIndices[idx] === q.correctOrder[idx]) {
+                        row.style.borderColor = 'var(--success)';
+                    } else {
+                        row.style.borderColor = 'var(--error)';
+                    }
+                });
+            }
+
+            // Play Synth Sound & Update Scores
+            if (isCorrect) {
+                quizScore++;
+                playSound('correct');
+                showQuizFeedbackBlock(true, q.explanation);
+            } else {
+                playSound('wrong');
+                showQuizFeedbackBlock(false, q.explanation);
+            }
+
+            // Update stats
+            const totalQuestionsAnswered = parseInt(localStorage.getItem('total_answered') || '0') + 1;
+            const totalCorrect = parseInt(localStorage.getItem('total_correct') || '0') + (isCorrect ? 1 : 0);
+            localStorage.setItem('total_answered', totalQuestionsAnswered);
+            localStorage.setItem('total_correct', totalCorrect);
+
+            const globalAccuracy = Math.round((totalCorrect / totalQuestionsAnswered) * 100);
+            document.getElementById('dash-accuracy').textContent = `${globalAccuracy}%`;
+            updateReadinessScore();
+
+            // Toggle Submit Button text to Continue
+            document.getElementById('quiz-action-btn').textContent = "Continue";
+        }
+
+        function showQuizFeedbackBlock(isCorrect, text) {
+            const block = document.getElementById('quiz-feedback-block');
+            const title = document.getElementById('quiz-feedback-title');
+            const body = document.getElementById('quiz-feedback-text');
+            
+            block.style.display = 'block';
+            body.textContent = text;
+            
+            if (isCorrect) {
+                block.className = 'quiz-feedback correct-style';
+                title.textContent = 'Correct!';
+            } else {
+                block.className = 'quiz-feedback wrong-style';
+                title.textContent = 'Explanation';
+            }
+        }
+
+        function showQuizResults() {
+            playSound('complete');
+            document.getElementById('quiz-card-box').style.display = 'none';
+            const resultBox = document.getElementById('quiz-result-box');
+            resultBox.style.display = 'block';
+            
+            const pct = Math.round((quizScore / activeQuizQuestions.length) * 100);
+            document.getElementById('result-score-percent').textContent = `${pct}%`;
+            
+            const title = document.getElementById('result-score-title');
+            const desc = document.getElementById('result-score-desc');
+            
+            if (pct >= 80) {
+                title.textContent = "Outstanding Performance! 🔥";
+                desc.textContent = `You got ${quizScore} out of ${activeQuizQuestions.length} correct. You are fully optimized to ace the exam in an hour!`;
+            } else if (pct >= 50) {
+                title.textContent = "Getting There! 📈";
+                desc.textContent = `You got ${quizScore} out of ${activeQuizQuestions.length} correct. Take a quick look at the interactive diagrams and cheat sheets before you start.`;
+            } else {
+                title.textContent = "Requires Review! ⏳";
+                desc.textContent = `You got ${quizScore} out of ${activeQuizQuestions.length} correct. Read through the Quick Cheat Sheets and try again. Practice makes perfect!`;
+            }
+        }
+
+        function updateReadinessScore() {
+            // Formula: (mastery card pct * 0.4) + (global accuracy * 0.6)
+            const flashcardCount = flashcards.length;
+            const cardPct = (masteredCardsCount / flashcardCount) * 100;
+            
+            const totalAns = parseInt(localStorage.getItem('total_answered') || '0');
+            const totalCorr = parseInt(localStorage.getItem('total_correct') || '0');
+            const accuracy = totalAns > 0 ? (totalCorr / totalAns) * 100 : 0;
+            
+            const readiness = Math.round((cardPct * 0.4) + (accuracy * 0.6));
+            document.getElementById('dash-readiness').textContent = `${readiness}%`;
+        }
+
+        // Initialize score defaults
+        localStorage.setItem('total_answered', '0');
+        localStorage.setItem('total_correct', '0');
+
+        // --- Clipboard Copy Code Utility ---
+        function copyCode(btn) {
+            const codeBlock = btn.nextElementSibling.querySelector('code');
+            if (codeBlock) {
+                navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                    btn.textContent = 'Copied!';
+                    btn.style.background = 'var(--success)';
+                    setTimeout(() => {
+                        btn.textContent = 'Copy';
+                        btn.style.background = 'rgba(255,255,255,0.08)';
+                    }, 2000);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
